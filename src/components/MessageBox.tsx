@@ -15,8 +15,6 @@ import Markdown, { MarkdownToJSX } from 'markdown-to-jsx';
 import Copy from './MessageActions/Copy';
 import Rewrite from './MessageActions/Rewrite';
 import MessageSources from './MessageSources';
-import SearchImages from './SearchImages';
-import SearchVideos from './SearchVideos';
 import { useSpeech } from 'react-text-to-speech';
 import ThinkBox from './ThinkBox';
 import { useChat, Section } from '@/lib/hooks/useChat';
@@ -205,16 +203,7 @@ const MessageBox = ({
 
         {section.assistantMessage && (
           <div className="lg:sticky lg:top-20 flex flex-col items-center space-y-3 w-full lg:w-3/12 z-30 h-full pb-4">
-            <SearchImages
-              query={section.userMessage.content}
-              chatHistory={chatTurns.slice(0, sectionIndex * 2)}
-              messageId={section.assistantMessage.messageId}
-            />
-            <SearchVideos
-              chatHistory={chatTurns.slice(0, sectionIndex * 2)}
-              query={section.userMessage.content}
-              messageId={section.assistantMessage.messageId}
-            />
+            {/* Search widgets removed for internal usage */}
           </div>
         )}
       </div>

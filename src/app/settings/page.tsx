@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Switch } from '@headlessui/react';
 import ThemeSwitcher from '@/components/theme/Switcher';
-import { ImagesIcon, VideoIcon } from 'lucide-react';
 import Link from 'next/link';
 import { PROVIDER_METADATA } from '@/lib/providers';
 
@@ -148,8 +147,6 @@ const Page = () => {
     string | null
   >(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [automaticImageSearch, setAutomaticImageSearch] = useState(false);
-  const [automaticVideoSearch, setAutomaticVideoSearch] = useState(false);
   const [systemInstructions, setSystemInstructions] = useState<string>('');
   const [measureUnit, setMeasureUnit] = useState<'Imperial' | 'Metric'>(
     'Metric',
@@ -206,13 +203,6 @@ const Page = () => {
       setSelectedEmbeddingModel(embeddingModel);
       setChatModels(data.chatModelProviders || {});
       setEmbeddingModels(data.embeddingModelProviders || {});
-
-      setAutomaticImageSearch(
-        localStorage.getItem('autoImageSearch') === 'true',
-      );
-      setAutomaticVideoSearch(
-        localStorage.getItem('autoVideoSearch') === 'true',
-      );
 
       setSystemInstructions(localStorage.getItem('systemInstructions')!);
 
@@ -364,11 +354,7 @@ const Page = () => {
         setConfig(data);
       }
 
-      if (key === 'automaticImageSearch') {
-        localStorage.setItem('autoImageSearch', value.toString());
-      } else if (key === 'automaticVideoSearch') {
-        localStorage.setItem('autoVideoSearch', value.toString());
-      } else if (key === 'chatModelProvider') {
+      if (key === 'chatModelProvider') {
         localStorage.setItem('chatModelProvider', value);
       } else if (key === 'chatModel') {
         localStorage.setItem('chatModel', value);
@@ -456,94 +442,6 @@ const Page = () => {
                     },
                   ]}
                 />
-              </div>
-            </SettingsSection>
-
-            <SettingsSection title="Automatic Search">
-              <div className="flex flex-col space-y-4">
-                <div className="flex items-center justify-between p-3 bg-light-secondary dark:bg-dark-secondary rounded-lg hover:bg-light-200 dark:hover:bg-dark-200 transition-colors">
-                  <div className="flex items-center space-x-3">
-                    <div className="p-2 bg-light-200 dark:bg-dark-200 rounded-lg">
-                      <ImagesIcon
-                        size={18}
-                        className="text-black/70 dark:text-white/70"
-                      />
-                    </div>
-                    <div>
-                      <p className="text-sm text-black/90 dark:text-white/90 font-medium">
-                        Automatic Image Search
-                      </p>
-                      <p className="text-xs text-black/60 dark:text-white/60 mt-0.5">
-                        Automatically search for relevant images in chat
-                        responses
-                      </p>
-                    </div>
-                  </div>
-                  <Switch
-                    checked={automaticImageSearch}
-                    onChange={(checked) => {
-                      setAutomaticImageSearch(checked);
-                      saveConfig('automaticImageSearch', checked);
-                    }}
-                    className={cn(
-                      automaticImageSearch
-                        ? 'bg-[#24A0ED]'
-                        : 'bg-light-200 dark:bg-dark-200',
-                      'relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none',
-                    )}
-                  >
-                    <span
-                      className={cn(
-                        automaticImageSearch
-                          ? 'translate-x-6'
-                          : 'translate-x-1',
-                        'inline-block h-4 w-4 transform rounded-full bg-white transition-transform',
-                      )}
-                    />
-                  </Switch>
-                </div>
-
-                <div className="flex items-center justify-between p-3 bg-light-secondary dark:bg-dark-secondary rounded-lg hover:bg-light-200 dark:hover:bg-dark-200 transition-colors">
-                  <div className="flex items-center space-x-3">
-                    <div className="p-2 bg-light-200 dark:bg-dark-200 rounded-lg">
-                      <VideoIcon
-                        size={18}
-                        className="text-black/70 dark:text-white/70"
-                      />
-                    </div>
-                    <div>
-                      <p className="text-sm text-black/90 dark:text-white/90 font-medium">
-                        Automatic Video Search
-                      </p>
-                      <p className="text-xs text-black/60 dark:text-white/60 mt-0.5">
-                        Automatically search for relevant videos in chat
-                        responses
-                      </p>
-                    </div>
-                  </div>
-                  <Switch
-                    checked={automaticVideoSearch}
-                    onChange={(checked) => {
-                      setAutomaticVideoSearch(checked);
-                      saveConfig('automaticVideoSearch', checked);
-                    }}
-                    className={cn(
-                      automaticVideoSearch
-                        ? 'bg-[#24A0ED]'
-                        : 'bg-light-200 dark:bg-dark-200',
-                      'relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none',
-                    )}
-                  >
-                    <span
-                      className={cn(
-                        automaticVideoSearch
-                          ? 'translate-x-6'
-                          : 'translate-x-1',
-                        'inline-block h-4 w-4 transform rounded-full bg-white transition-transform',
-                      )}
-                    />
-                  </Switch>
-                </div>
               </div>
             </SettingsSection>
 

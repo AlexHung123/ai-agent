@@ -1,10 +1,7 @@
 import {
-  BadgePercent,
   ChevronDown,
-  Globe,
   Pencil,
   ScanEye,
-  SwatchBook,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import {
@@ -13,46 +10,15 @@ import {
   PopoverPanel,
   Transition,
 } from '@headlessui/react';
-import { SiReddit, SiYoutube } from '@icons-pack/react-simple-icons';
 import { Fragment } from 'react';
 import { useChat } from '@/lib/hooks/useChat';
 
 const focusModes = [
   {
-    key: 'webSearch',
-    title: 'All',
-    description: 'Searches across all of the internet',
-    icon: <Globe size={20} />,
-  },
-  {
-    key: 'academicSearch',
-    title: 'Academic',
-    description: 'Search in published academic papers',
-    icon: <SwatchBook size={20} />,
-  },
-  {
     key: 'writingAssistant',
     title: 'Writing',
     description: 'Chat without searching the web',
     icon: <Pencil size={16} />,
-  },
-  {
-    key: 'wolframAlphaSearch',
-    title: 'Wolfram Alpha',
-    description: 'Computational knowledge engine',
-    icon: <BadgePercent size={20} />,
-  },
-  {
-    key: 'youtubeSearch',
-    title: 'Youtube',
-    description: 'Search and watch videos',
-    icon: <SiYoutube className="h-5 w-auto mr-0.5" />,
-  },
-  {
-    key: 'redditSearch',
-    title: 'Reddit',
-    description: 'Search for discussions and opinions',
-    icon: <SiReddit className="h-5 w-auto mr-0.5" />,
   },
 ];
 
@@ -65,7 +31,7 @@ const Focus = () => {
         type="button"
         className=" text-black/50 dark:text-white/50 rounded-xl hover:bg-light-secondary dark:hover:bg-dark-secondary active:scale-95 transition duration-200 hover:text-black dark:hover:text-white"
       >
-        {focusMode !== 'webSearch' ? (
+        {focusMode !== 'writingAssistant' ? (
           <div className="flex flex-row items-center space-x-1">
             {focusModes.find((mode) => mode.key === focusMode)?.icon}
             <p className="text-xs font-medium hidden lg:block">

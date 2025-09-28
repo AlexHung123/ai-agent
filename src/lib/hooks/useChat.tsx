@@ -347,7 +347,7 @@ export const ChatProvider = ({
   const [files, setFiles] = useState<File[]>([]);
   const [fileIds, setFileIds] = useState<string[]>([]);
 
-  const [focusMode, setFocusMode] = useState('webSearch');
+  const [focusMode, setFocusMode] = useState('writingAssistant');
   const [optimizationMode, setOptimizationMode] = useState('speed');
 
   const [isMessagesLoaded, setIsMessagesLoaded] = useState(false);
@@ -665,20 +665,7 @@ export const ChatProvider = ({
 
         const lastMsg = messagesRef.current[messagesRef.current.length - 1];
 
-        const autoImageSearch = localStorage.getItem('autoImageSearch');
-        const autoVideoSearch = localStorage.getItem('autoVideoSearch');
-
-        if (autoImageSearch === 'true') {
-          document
-            .getElementById(`search-images-${lastMsg.messageId}`)
-            ?.click();
-        }
-
-        if (autoVideoSearch === 'true') {
-          document
-            .getElementById(`search-videos-${lastMsg.messageId}`)
-            ?.click();
-        }
+        // Auto search functionality removed for internal usage
 
         /* Check if there are sources after message id's index and no suggestions */
 

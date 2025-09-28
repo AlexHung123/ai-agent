@@ -42,11 +42,9 @@
 
 ## Overview
 
-Perplexica is an open-source AI-powered searching tool or an AI-powered search engine that goes deep into the internet to find answers. Inspired by Perplexity AI, it's an open-source option that not just searches the web but understands your questions. It uses advanced machine learning algorithms like similarity searching and embeddings to refine results and provides clear answers with sources cited.
+Perplexica is an open-source AI-powered chat assistant designed for internal usage. It provides intelligent conversations with support for local LLMs and file uploads, making it perfect for private, secure AI interactions within your organization.
 
-Using SearxNG to stay current and fully open source, Perplexica ensures you always get the most up-to-date information without compromising your privacy.
-
-Want to know more about its architecture and how it works? You can read it [here](https://github.com/ItzCrazyKns/Perplexica/tree/master/docs/architecture/README.md).
+This version has been modified for internal use and does not include web search capabilities, focusing on privacy and security for enterprise environments.
 
 ## Preview
 
@@ -55,18 +53,12 @@ Want to know more about its architecture and how it works? You can read it [here
 ## Features
 
 - **Local LLMs**: You can utilize local LLMs such as Qwen, DeepSeek, Llama, and Mistral.
-- **Two Main Modes:**
-  - **Copilot Mode:** (In development) Boosts search by generating different queries to find more relevant internet sources. Like normal search instead of just using the context by SearxNG, it visits the top matches and tries to find relevant sources to the user's query directly from the page.
-  - **Normal Mode:** Processes your query and performs a web search.
-- **Focus Modes:** Special modes to better answer specific types of questions. Perplexica currently has 6 focus modes:
-  - **All Mode:** Searches the entire web to find the best results.
-  - **Writing Assistant Mode:** Helpful for writing tasks that do not require searching the web.
-  - **Academic Search Mode:** Finds articles and papers, ideal for academic research.
-  - **YouTube Search Mode:** Finds YouTube videos based on the search query.
-  - **Wolfram Alpha Search Mode:** Answers queries that need calculations or data analysis using Wolfram Alpha.
-  - **Reddit Search Mode:** Searches Reddit for discussions and opinions related to the query.
-- **Current Information:** Some search tools might give you outdated info because they use data from crawling bots and convert them into embeddings and store them in a index. Unlike them, Perplexica uses SearxNG, a metasearch engine to get the results and rerank and get the most relevant source out of it, ensuring you always get the latest information without the overhead of daily data updates.
-- **API**: Integrate Perplexica into your existing applications and make use of its capibilities.
+- **Writing Assistant Mode**: Helpful for writing tasks and general AI conversations.
+- **File Upload Support**: Upload and analyze documents (PDF, DOCX, etc.) with intelligent processing.
+- **Privacy-First**: No web search or external data collection - perfect for internal usage.
+- **Local-First Architecture**: All processing happens on your infrastructure.
+- **API Integration**: Integrate into your existing applications.
+- **Multiple LLM Providers**: Support for OpenAI, Anthropic, Groq, local models and more.
 
 It has many more features like image and video search. Some of the planned features are mentioned in [upcoming features](#upcoming-features).
 
@@ -85,13 +77,12 @@ There are mainly 2 ways of installing Perplexica - With Docker, Without Docker. 
 
 3. After cloning, navigate to the directory containing the project files.
 
-4. Rename the `sample.config.toml` file to `config.toml`. For Docker setups, you need only fill in the following fields:
+4. Rename the `sample.config.toml` file to `config.toml`. Configure the following fields based on your preferred LLM provider:
 
    - `OPENAI`: Your OpenAI API key. **You only need to fill this if you wish to use OpenAI's models**.
-   - `CUSTOM_OPENAI`: Your OpenAI-API-compliant local server URL, model name, and API key. You should run your local server with host set to `0.0.0.0`, take note of which port number it is running on, and then use that port number to set `API_URL = http://host.docker.internal:PORT_NUMBER`. You must specify the model name, such as `MODEL_NAME = "unsloth/DeepSeek-R1-0528-Qwen3-8B-GGUF:Q4_K_XL"`. Finally, set `API_KEY` to the appropriate value. If you have not defined an API key, just put anything you want in-between the quotation marks: `API_KEY = "whatever-you-want-but-not-blank"` **You only need to configure these settings if you want to use a local OpenAI-compliant server, such as Llama.cpp's [`llama-server`](https://github.com/ggml-org/llama.cpp/blob/master/tools/server/README.md)**.
-   - `OLLAMA`: Your Ollama API URL. You should enter it as `http://host.docker.internal:PORT_NUMBER`. If you installed Ollama on port 11434, use `http://host.docker.internal:11434`. For other ports, adjust accordingly. **You need to fill this if you wish to use Ollama's models instead of OpenAI's**.
-   - `LEMONADE`: Your Lemonade API URL. Since Lemonade runs directly on your local machine (not in Docker), you should enter it as `http://host.docker.internal:PORT_NUMBER`. If you installed Lemonade on port 8000, use `http://host.docker.internal:8000`. For other ports, adjust accordingly. **You need to fill this if you wish to use Lemonade's models**.
-   - `GROQ`: Your Groq API key. **You only need to fill this if you wish to use Groq's hosted models**.`
+   - `CUSTOM_OPENAI`: Your OpenAI-API-compliant local server URL, model name, and API key. **You only need to configure these settings if you want to use a local OpenAI-compliant server**.
+   - `OLLAMA`: Your Ollama API URL. **You need to fill this if you wish to use Ollama's models**.
+   - `GROQ`: Your Groq API key. **You only need to fill this if you wish to use Groq's hosted models**.
    - `ANTHROPIC`: Your Anthropic API key. **You only need to fill this if you wish to use Anthropic models**.
    - `Gemini`: Your Gemini API key. **You only need to fill this if you wish to use Google's models**.
    - `DEEPSEEK`: Your Deepseek API key. **Only needed if you want Deepseek models.**
@@ -113,11 +104,10 @@ There are mainly 2 ways of installing Perplexica - With Docker, Without Docker. 
 
 ### Non-Docker Installation
 
-1. Install SearXNG and allow `JSON` format in the SearXNG settings.
-2. Clone the repository and rename the `sample.config.toml` file to `config.toml` in the root directory. Ensure you complete all required fields in this file.
-3. After populating the configuration run `npm i`.
-4. Install the dependencies and then execute `npm run build`.
-5. Finally, start the app by running `npm run start`
+1. Clone the repository and rename the `sample.config.toml` file to `config.toml` in the root directory. Ensure you complete all required fields in this file.
+2. After populating the configuration run `npm i`.
+3. Install the dependencies and then execute `npm run build`.
+4. Finally, start the app by running `npm run start`
 
 **Note**: Using Docker is recommended as it simplifies the setup process, especially for managing environment variables and dependencies.
 
@@ -129,7 +119,7 @@ See the [installation documentation](https://github.com/ItzCrazyKns/Perplexica/t
 
 If Perplexica tells you that you haven't configured any chat model providers, ensure that:
 
-1. Your server is running on `0.0.0.0` (not `127.0.0.1`) and on the same port you put in the API URL.
+1. Your server is running and accessible.
 2. You have specified the correct model name loaded by your local LLM server.
 3. You have specified the correct API key, or if one is not defined, you have put _something_ in the API key field and not left it empty.
 
@@ -171,24 +161,24 @@ If you're encountering a Lemonade connection error, it is likely due to the back
    - Verify that Lemonade is configured to accept connections from all interfaces (`0.0.0.0`), not just localhost (`127.0.0.1`).
    - Ensure that the port (default is 8000) is not blocked by your firewall.
 
-## Using as a Search Engine
+## Using as a Chat Interface
 
-If you wish to use Perplexica as an alternative to traditional search engines like Google or Bing, or if you want to add a shortcut for quick access from your browser's search bar, follow these steps:
+Perplexica serves as an intelligent chat interface for your internal AI needs. You can:
 
-1. Open your browser's settings.
-2. Navigate to the 'Search Engines' section.
-3. Add a new site search with the following URL: `http://localhost:3000/?q=%s`. Replace `localhost` with your IP address or domain name, and `3000` with the port number if Perplexica is not hosted locally.
-4. Click the add button. Now, you can use Perplexica directly from your browser's search bar.
+1. Have conversations with various LLM providers
+2. Upload and analyze documents
+3. Get assistance with writing and general tasks
+4. Access the application at `http://localhost:3000` after setup
 
 ## Using Perplexica's API
 
-Perplexica also provides an API for developers looking to integrate its powerful search engine into their own applications. You can run searches, use multiple models and get answers to your queries.
+Perplexica provides an API for developers looking to integrate its AI chat capabilities into their own applications. You can run chat sessions, use multiple models and get intelligent responses.
 
-For more details, check out the full documentation [here](https://github.com/ItzCrazyKns/Perplexica/tree/master/docs/API/SEARCH.md).
+For more details, check out the API documentation.
 
 ## Expose Perplexica to network
 
-Perplexica runs on Next.js and handles all API requests. It works right away on the same network and stays accessible even with port forwarding.
+Perplexica runs on Next.js and handles all API requests. It works right away on the same network and stays accessible with port forwarding for internal usage within your organization.
 
 ## One-Click Deployment
 
@@ -202,10 +192,10 @@ Perplexica runs on Next.js and handles all API requests. It works right away on 
 - [x] Add settings page
 - [x] Adding support for local LLMs
 - [x] History Saving features
-- [x] Introducing various Focus Modes
+- [x] Writing Assistant Mode
 - [x] Adding API support
-- [x] Adding Discover
-- [ ] Finalizing Copilot Mode
+- [ ] Enhanced file processing capabilities
+- [ ] Advanced document analysis features
 
 ## Support Us
 
@@ -221,10 +211,10 @@ We also accept donations to help sustain our project. If you would like to contr
 
 ## Contribution
 
-Perplexica is built on the idea that AI and large language models should be easy for everyone to use. If you find bugs or have ideas, please share them in via GitHub Issues. For more information on contributing to Perplexica you can read the [CONTRIBUTING.md](CONTRIBUTING.md) file to learn more about Perplexica and how you can contribute to it.
+Perplexica is built on the idea that AI should be easy for everyone to use in secure, private environments. If you find bugs or have ideas for this internal version, please share them via GitHub Issues. For more information on contributing to Perplexica you can read the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
 ## Help and Support
 
 If you have any questions or feedback, please feel free to reach out to us. You can create an issue on GitHub or join our Discord server. There, you can connect with other users, share your experiences and reviews, and receive more personalized help. [Click here](https://discord.gg/EFwsmQDgAu) to join the Discord server. To discuss matters outside of regular support, feel free to contact me on Discord at `itzcrazykns`.
 
-Thank you for exploring Perplexica, the AI-powered search engine designed to enhance your search experience. We are constantly working to improve Perplexica and expand its capabilities. We value your feedback and contributions which help us make Perplexica even better. Don't forget to check back for updates and new features!
+Thank you for exploring Perplexica, the AI-powered chat assistant designed for internal usage. We are constantly working to improve Perplexica and expand its capabilities for secure, private AI interactions. We value your feedback and contributions which help us make Perplexica even better for internal enterprise use. Don't forget to check back for updates and new features!

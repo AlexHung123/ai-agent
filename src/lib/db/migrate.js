@@ -1,6 +1,6 @@
-import Database from 'better-sqlite3';
-import path from 'path';
-import fs from 'fs';
+const Database = require('better-sqlite3');
+const path = require('path');
+const fs = require('fs');
 
 const db = new Database(path.join(process.cwd(), 'data', 'db.sqlite'));
 
@@ -14,7 +14,7 @@ db.exec(`
   );
 `);
 
-function sanitizeSql(content: string) {
+function sanitizeSql(content) {
   return content
     .split(/\r?\n/)
     .filter(
@@ -66,7 +66,7 @@ fs.readdirSync(migrationsFolder)
                     VALUES (?, ?, ?, ?, ?, ?)
                 `);
 
-        messages.forEach((msg: any) => {
+        messages.forEach((msg) => {
           if (msg.type === 'user') {
             msg.metadata = JSON.parse(msg.metadata || '{}');
             insertMessage.run(

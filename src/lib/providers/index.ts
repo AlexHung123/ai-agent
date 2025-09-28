@@ -90,7 +90,7 @@ export const chatModelProviders: Record<
   deepseek: loadDeepseekChatModels,
   aimlapi: loadAimlApiChatModels,
   lmstudio: loadLMStudioChatModels,
-  lemonade: loadLemonadeChatModels,
+  // lemonade: loadLemonadeChatModels,
 };
 
 export const embeddingModelProviders: Record<
@@ -103,7 +103,7 @@ export const embeddingModelProviders: Record<
   transformers: loadTransformersEmbeddingsModels,
   aimlapi: loadAimlApiEmbeddingModels,
   lmstudio: loadLMStudioEmbeddingsModels,
-  lemonade: loadLemonadeEmbeddingModels,
+  // lemonade: loadLemonadeEmbeddingModels,
 };
 
 export const getAvailableChatModelProviders = async () => {

@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "format:write": "prettier . --write",
-    "db:migrate": "node ./src/lib/db/migrate.ts"
+    "db:migrate": "node ./src/lib/db/migrate.js"
   },
   "dependencies": {
     "@headlessui/react": "^2.2.0",

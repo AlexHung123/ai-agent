@@ -52,9 +52,6 @@ interface Config {
       MODEL_NAME: string;
     };
   };
-  API_ENDPOINTS: {
-    SEARXNG: string;
-  };
 }
 
 type RecursivePartial<T> = {
@@ -85,9 +82,6 @@ export const getGroqApiKey = () => loadConfig().MODELS.GROQ.API_KEY;
 export const getAnthropicApiKey = () => loadConfig().MODELS.ANTHROPIC.API_KEY;
 
 export const getGeminiApiKey = () => loadConfig().MODELS.GEMINI.API_KEY;
-
-export const getSearxngApiEndpoint = () =>
-  process.env.SEARXNG_API_URL || loadConfig().API_ENDPOINTS.SEARXNG;
 
 export const getOllamaApiEndpoint = () => loadConfig().MODELS.OLLAMA.API_URL;
 
