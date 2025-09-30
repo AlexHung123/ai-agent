@@ -16,8 +16,20 @@ import { useChat } from '@/lib/hooks/useChat';
 const focusModes = [
   {
     key: 'writingAssistant',
-    title: 'Writing',
+    title: 'Agent Guide',
     description: 'Chat without searching the web',
+    icon: <Pencil size={16} />,
+  },
+  // {
+  //   key: 'agentData',
+  //   title: 'Agent Data',
+  //   description: 'Chat with Agent Data',
+  //   icon: <Pencil size={16} />,
+  // },
+  {
+    key: 'agentSFC',
+    title: 'Agent SFC',
+    description: 'Chat with Agent SFC',
     icon: <Pencil size={16} />,
   },
 ];

@@ -1,3 +1,4 @@
+import { sfcPrompt } from './agentSFC';
 import {
   webSearchResponsePrompt,
   webSearchRetrieverFewShots,
@@ -10,4 +11,5 @@ export default {
   webSearchRetrieverPrompt,
   webSearchRetrieverFewShots,
   writingAssistantPrompt,
+  sfcPrompt
 };

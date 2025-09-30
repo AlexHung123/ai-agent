@@ -1,4 +1,6 @@
 import crypto from 'crypto';
+import fs from 'fs';
+import path from 'path';
 import { AIMessage, BaseMessage, HumanMessage } from '@langchain/core/messages';
 import { EventEmitter } from 'stream';
 import {
@@ -301,7 +303,7 @@ export const POST = async (req: Request) => {
     const humanMessageId =
       message.messageId ?? crypto.randomBytes(7).toString('hex');
 
-    const history: BaseMessage[] = body.history.map((msg) => {
+    let history: BaseMessage[] = body.history.map((msg) => {
       if (msg[0] === 'human') {
         return new HumanMessage({
           content: msg[1],
@@ -312,6 +314,63 @@ export const POST = async (req: Request) => {
         });
       }
     });
+
+
+    console.log('--------');
+    console.log(body.focusMode);
+
+    // Enhance history for writingAssistant mode
+    if (body.focusMode === 'writingAssistant') {
+      const systemInstruction = "You are an assistant that must strictly answer questions based only on the content of the document provided in the first AI message of the chat history. For every user question, carefully search that document and provide an answer that directly references its content. Do not use your own knowledge or make assumptions beyond what is stated in the document. If the answer cannot be found in the document, respond with: 'The document does not contain the answer to this question.' Always remain faithful to the document in your responses.";
+      
+      // Read training guide content
+      let trainingGuideContent = '';
+      try {
+        const trainingGuidePath = path.join(process.cwd(), 'uploads', 'training_guide.md');
+        trainingGuideContent = fs.readFileSync(trainingGuidePath, 'utf8');
+      } catch (error) {
+        console.warn('Could not read training_guide.md:', error);
+      }
+      
+      // Combine system instruction and training guide content as one AIMessage
+      let combinedContent = systemInstruction;
+      
+      if (trainingGuideContent.trim()) {
+        combinedContent = trainingGuideContent + '\n\n' + systemInstruction;
+      }
+      
+      history.unshift(new AIMessage({
+        content: combinedContent
+      }));
+    }
+
+
+    // Enhance history for writingAssistant mode
+    if (body.focusMode === 'agentSFC') {
+      const systemInstruction = "You are an assistant that must strictly answer questions based only on the content of the document provided in the first AI message of the chat history. For every user question, carefully search that document and provide an answer that directly references its content. Do not use your own knowledge or make assumptions beyond what is stated in the document. If the answer cannot be found in the document, respond with: 'The document does not contain the answer to this question.' Always remain faithful to the document in your responses.";
+      
+      // Read sfc content
+      let sfcContent = '';
+      try {
+        const sfcPath = path.join(process.cwd(), 'uploads', 'sfc.md');
+        sfcContent = fs.readFileSync(sfcPath, 'utf8');
+      } catch (error) {
+        console.warn('Could not read sfc.md:', error);
+      }
+      
+      // Combine system instruction and training guide content as one AIMessage
+      let combinedContent = systemInstruction;
+      
+      if (sfcContent.trim()) {
+        combinedContent = systemInstruction + '\n\n' + sfcContent;
+      }
+      
+      history.unshift(new AIMessage({
+        content: combinedContent
+      }));
+    }
+
+    console.log(history);
 
     const handler = searchHandlers[body.focusMode];
 
