@@ -58,13 +58,13 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
             ))}
           </VerticalIconContainer>
 
-          <Link href="/settings">
+          {/* <Link href="/settings">
             <Settings className="cursor-pointer" />
-          </Link>
+          </Link> */}
         </div>
       </div>
 
-      <div className="fixed bottom-0 w-full z-50 flex flex-row items-center gap-x-6 bg-light-primary dark:bg-dark-primary px-4 py-4 shadow-sm lg:hidden">
+      {/* <div className="fixed bottom-0 w-full z-50 flex flex-row items-center gap-x-6 bg-light-primary dark:bg-dark-primary px-4 py-4 shadow-sm lg:hidden">
         {navLinks.map((link, i) => (
           <Link
             href={link.href}
@@ -83,7 +83,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
             <p className="text-xs">{link.label}</p>
           </Link>
         ))}
-      </div>
+      </div> */}
 
       <Layout>{children}</Layout>
     </div>

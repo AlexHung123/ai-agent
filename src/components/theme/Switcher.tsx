@@ -3,7 +3,7 @@ import { useTheme } from 'next-themes';
 import { useCallback, useEffect, useState } from 'react';
 import Select from '../ui/Select';
 
-type Theme = 'dark' | 'light' | 'system';
+type Theme = 'light';
 
 const ThemeSwitcher = ({ className }: { className?: string }) => {
   const [mounted, setMounted] = useState(false);
@@ -20,24 +20,12 @@ const ThemeSwitcher = ({ className }: { className?: string }) => {
     setMounted(true);
   }, []);
 
+  // Force light theme on mount
   useEffect(() => {
-    if (isTheme('system')) {
-      const preferDarkScheme = window.matchMedia(
-        '(prefers-color-scheme: dark)',
-      );
-
-      const detectThemeChange = (event: MediaQueryListEvent) => {
-        const theme: Theme = event.matches ? 'dark' : 'light';
-        setTheme(theme);
-      };
-
-      preferDarkScheme.addEventListener('change', detectThemeChange);
-
-      return () => {
-        preferDarkScheme.removeEventListener('change', detectThemeChange);
-      };
+    if (theme !== 'light') {
+      setTheme('light');
     }
-  }, [isTheme, setTheme, theme]);
+  }, [theme, setTheme]);
 
   // Avoid Hydration Mismatch
   if (!mounted) {
@@ -51,7 +39,6 @@ const ThemeSwitcher = ({ className }: { className?: string }) => {
       onChange={(e) => handleThemeSwitch(e.target.value as Theme)}
       options={[
         { value: 'light', label: 'Light' },
-        { value: 'dark', label: 'Dark' },
       ]}
     />
   );

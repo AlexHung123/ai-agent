@@ -54,7 +54,7 @@ const ChatWindow = () => {
   if (hasError) {
     return (
       <div className="relative">
-        <div className="absolute w-full flex flex-row items-center justify-end mr-5 mt-5">
+        <div className="absolute w-full flex flex-row items-center justify-end mr-5 mt-5 hidden">
           <Link href="/settings">
             <Settings className="cursor-pointer lg:hidden" />
           </Link>
