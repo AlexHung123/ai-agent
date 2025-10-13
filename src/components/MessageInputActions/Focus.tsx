@@ -15,21 +15,21 @@ import { useChat } from '@/lib/hooks/useChat';
 
 const focusModes = [
   {
-    key: 'writingAssistant',
+    key: 'agentGuide',
     title: 'Agent Guide',
-    description: 'Chat without searching the web',
+    description: 'Chat without Agent Guide',
     icon: <Pencil size={16} />,
   },
-  // {
-  //   key: 'agentData',
-  //   title: 'Agent Data',
-  //   description: 'Chat with Agent Data',
-  //   icon: <Pencil size={16} />,
-  // },
   {
     key: 'agentSFC',
     title: 'Agent SFC',
     description: 'Chat with Agent SFC',
+    icon: <Pencil size={16} />,
+  },
+  {
+    key: 'agentSurvey',
+    title: 'Agent Survey',
+    description: 'Provide Survey ID to generate survey questions summary',
     icon: <Pencil size={16} />,
   },
 ];
@@ -43,7 +43,7 @@ const Focus = () => {
         type="button"
         className=" text-black/50 dark:text-white/50 rounded-xl hover:bg-light-secondary dark:hover:bg-dark-secondary active:scale-95 transition duration-200 hover:text-black dark:hover:text-white"
       >
-        {focusMode !== 'writingAssistant' ? (
+        {focusMode !== 'agentGuide' ? (
           <div className="flex flex-row items-center space-x-1">
             {focusModes.find((mode) => mode.key === focusMode)?.icon}
             <p className="text-xs font-medium hidden lg:block">

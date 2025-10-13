@@ -20,6 +20,7 @@ import {
 } from '@/lib/config';
 import { searchHandlers } from '@/lib/search';
 import { z } from 'zod';
+import prompts from '@/lib/prompts';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -315,13 +316,9 @@ export const POST = async (req: Request) => {
       }
     });
 
-
-    console.log('--------');
-    console.log(body.focusMode);
-
     // Enhance history for writingAssistant mode
-    if (body.focusMode === 'writingAssistant') {
-      const systemInstruction = "You are an assistant that must strictly answer questions based only on the content of the document provided in the first AI message of the chat history. For every user question, carefully search that document and provide an answer that directly references its content. Do not use your own knowledge or make assumptions beyond what is stated in the document. If the answer cannot be found in the document, respond with: 'The document does not contain the answer to this question.' Always remain faithful to the document in your responses.";
+    if (body.focusMode === 'agentGuide') {
+      const systemInstruction = prompts.guidePrompt;
       
       // Read training guide content
       let trainingGuideContent = '';
@@ -344,8 +341,6 @@ export const POST = async (req: Request) => {
       }));
     }
 
-
-    // Enhance history for writingAssistant mode
     if (body.focusMode === 'agentSFC') {
       const systemInstruction = "You are an assistant that must strictly answer questions based only on the content of the document provided in the first AI message of the chat history. For every user question, carefully search that document and provide an answer that directly references its content. Do not use your own knowledge or make assumptions beyond what is stated in the document. If the answer cannot be found in the document, respond with: 'The document does not contain the answer to this question.' Always remain faithful to the document in your responses.";
       
@@ -369,8 +364,6 @@ export const POST = async (req: Request) => {
         content: combinedContent
       }));
     }
-
-    console.log(history);
 
     const handler = searchHandlers[body.focusMode];
 

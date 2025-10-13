@@ -347,7 +347,7 @@ export const ChatProvider = ({
   const [files, setFiles] = useState<File[]>([]);
   const [fileIds, setFileIds] = useState<string[]>([]);
 
-  const [focusMode, setFocusMode] = useState('writingAssistant');
+  const [focusMode, setFocusMode] = useState('agentGuide');
   const [optimizationMode, setOptimizationMode] = useState('speed');
 
   const [isMessagesLoaded, setIsMessagesLoaded] = useState(false);
