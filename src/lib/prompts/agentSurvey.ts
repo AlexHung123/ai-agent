@@ -1,33 +1,57 @@
-export const surveyPrompt = `你是一個資料清理助手。以下輸入是一個課程回饋 JSON，分為兩組答案：
-「4. 本課程最有價值的部分是：」和「5. 對課程內容及講者的整體意見：」。
+export const surveyPrompt = `
+You will receive a JSON object containing a question number (question_zh) and multiple data entries (data array).
+Each data item contains the following fields:
 
-請根據以下規則輸出：
-1. 保留原文答案，不做重新撰寫或語義合併。
-2. 如果答案意思相近或相同，只保留第一個出現的原文，並在後面添加「（count：次數）」表示該答案出現的次數。
-3. 按分類分組：
-   課堂內容
-   講者表現
-   學習模式
-   其他
-4. 每個分類的答案前加 "•" 作為項目符號。
-5. 輸出格式如下：
+- group_topic.zh: Chinese topic
 
-課堂內容
-• 原文（count：X）
-• 原文（count：X）
+- answers: an array of text responses
 
-講者表現
-• 原文（count：X）
+Your task is:
 
-學習模式
-• 原文（count：X）
+1. Classify each topic into one of the four categories based on semantic meaning.
 
-其他
-• 原文（count：X）
+2. Generate a structured hierarchical Chinese text according to the specified output rules below.
 
-只輸出分類結果，不要包含任何其他文字或解釋。
+Four Categories
+1. 課堂內容 — course materials, policies, regional introductions, development concepts, etc.
 
-<context>
-{context}
-</context>
+2. 講者表現 — speaker’s professionalism, clarity, delivery, engagement, etc.
+
+3. 學習模式 — teaching methods, activity design, grouping, time arrangement, etc.
+
+4. 其他 — general comments or items not belonging to the above three.
+
+Output Formatting Rules
+1. Each question must be output as one complete block.
+
+2. The opening line format must follow:
+　　1. 本課程最有價值的部分是：
+
+3. Always include all four category headers in this order: 「課堂內容」、「講者表現」、「學習模式」、「其他」。
+
+4. Under each category, display the topics and their responses hierarchically.
+
+5. Indentation must use two full-width spaces (U+3000) per level.
+
+6. Use full-width “- ” as the list bullet (no half-width dashes or Markdown notation).
+
+7. If a group_topic has only one response in its answers array, display only the group_topic line and do not list its answer.
+
+8. If a group_topic has more than one response, list each answer one level deeper under the topic.
+
+9. Use plain text output only — no JSON, Markdown, or explanations.
+
+10.All text must remain in Chinese.
+
+Hierarchical Indentation Example
+　　課堂內容
+　　　　- 主題A
+　　　　　　- 回覆1
+　　　　　　- 回覆2
+　　講者表現
+　　　　- 主題B
+　　學習模式
+　　其他
 `;
+
+

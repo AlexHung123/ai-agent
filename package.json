@@ -23,6 +23,8 @@
     "@langchain/ollama": "^0.2.3",
     "@langchain/openai": "^0.6.2",
     "@langchain/textsplitters": "^0.1.0",
+    "@prisma/adapter-pg": "^6.17.1",
+    "@prisma/client": "^6.17.1",
     "@tailwindcss/typography": "^0.5.12",
     "@xenova/transformers": "^2.17.2",
     "axios": "^1.8.3",
@@ -64,7 +66,9 @@
     "eslint-config-next": "14.1.4",
     "postcss": "^8",
     "prettier": "^3.2.5",
+    "prisma": "^6.17.1",
     "tailwindcss": "^3.3.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5"
   }
 }

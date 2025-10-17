@@ -122,9 +122,9 @@ export const POST = async (req: Request) => {
       body.query,
       history,
       llm,
-      embeddings,
-      body.optimizationMode,
-      [],
+      // embeddings,
+      // body.optimizationMode,
+      // [],
       body.systemInstructions || '',
     );
 

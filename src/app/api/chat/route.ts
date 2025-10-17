@@ -3,10 +3,10 @@ import fs from 'fs';
 import path from 'path';
 import { AIMessage, BaseMessage, HumanMessage } from '@langchain/core/messages';
 import { EventEmitter } from 'stream';
-import {
-  getAvailableChatModelProviders,
-  getAvailableEmbeddingModelProviders,
-} from '@/lib/providers';
+// import {
+//   getAvailableChatModelProviders,
+//   getAvailableEmbeddingModelProviders,
+// } from '@/lib/providers';
 import db from '@/lib/db';
 import { chats, messages as messagesSchema } from '@/lib/db/schema';
 import { and, eq, gt } from 'drizzle-orm';
@@ -21,9 +21,6 @@ import {
 import { searchHandlers } from '@/lib/search';
 import { z } from 'zod';
 import prompts from '@/lib/prompts';
-
-export const runtime = 'nodejs';
-export const dynamic = 'force-dynamic';
 
 const messageSchema = z.object({
   messageId: z.string().min(1, 'Message ID is required'),
@@ -251,34 +248,33 @@ export const POST = async (req: Request) => {
       );
     }
 
-    const [chatModelProviders, embeddingModelProviders] = await Promise.all([
-      getAvailableChatModelProviders(),
-      getAvailableEmbeddingModelProviders(),
-    ]);
+    // const [chatModelProviders, embeddingModelProviders] = await Promise.all([
+    //   getAvailableChatModelProviders(),
+    //   getAvailableEmbeddingModelProviders(),
+    // ]);
 
-    const chatModelProvider =
-      chatModelProviders[
-        body.chatModel?.provider || Object.keys(chatModelProviders)[0]
-      ];
-    const chatModel =
-      chatModelProvider[
-        body.chatModel?.name || Object.keys(chatModelProvider)[0]
-      ];
+    // const chatModelProvider =
+    //   chatModelProviders[
+    //     body.chatModel?.provider || Object.keys(chatModelProviders)[0]
+    //   ];
+    // const chatModel =
+    //   chatModelProvider[
+    //     body.chatModel?.name || Object.keys(chatModelProvider)[0]
+    //   ];
 
-    const embeddingProvider =
-      embeddingModelProviders[
-        body.embeddingModel?.provider || Object.keys(embeddingModelProviders)[0]
-      ];
-    const embeddingModel =
-      embeddingProvider[
-        body.embeddingModel?.name || Object.keys(embeddingProvider)[0]
-      ];
+    // const embeddingProvider =
+    //   embeddingModelProviders[
+    //     body.embeddingModel?.provider || Object.keys(embeddingModelProviders)[0]
+    //   ];
+    // const embeddingModel =
+    //   embeddingProvider[
+    //     body.embeddingModel?.name || Object.keys(embeddingProvider)[0]
+    //   ];
 
-    let llm: BaseChatModel | undefined;
-    let embedding = embeddingModel.model;
-
-    if (body.chatModel?.provider === 'custom_openai') {
-      llm = new ChatOpenAI({
+    // let llm: BaseChatModel | undefined;
+    // let embedding = embeddingModel.model;
+    // let embedding = undefined;
+    const llm = new ChatOpenAI({
         apiKey: getCustomOpenaiApiKey(),
         modelName: getCustomOpenaiModelName(),
         temperature: 0.7,
@@ -286,20 +282,31 @@ export const POST = async (req: Request) => {
           baseURL: getCustomOpenaiApiUrl(),
         },
       }) as unknown as BaseChatModel;
-    } else if (chatModelProvider && chatModel) {
-      llm = chatModel.model;
-    }
+
+    // if (body.chatModel?.provider === 'custom_openai') {
+    //   llm = new ChatOpenAI({
+    //     apiKey: getCustomOpenaiApiKey(),
+    //     modelName: getCustomOpenaiModelName(),
+    //     temperature: 0.7,
+    //     configuration: {
+    //       baseURL: getCustomOpenaiApiUrl(),
+    //     },
+    //   }) as unknown as BaseChatModel;
+    // } 
+    // else if (chatModelProvider && chatModel) {
+    //   llm = chatModel.model;
+    // }
 
     if (!llm) {
       return Response.json({ error: 'Invalid chat model' }, { status: 400 });
     }
 
-    if (!embedding) {
-      return Response.json(
-        { error: 'Invalid embedding model' },
-        { status: 400 },
-      );
-    }
+    // if (!embedding) {
+    //   return Response.json(
+    //     { error: 'Invalid embedding model' },
+    //     { status: 400 },
+    //   );
+    // }
 
     const humanMessageId =
       message.messageId ?? crypto.randomBytes(7).toString('hex');
@@ -342,7 +349,7 @@ export const POST = async (req: Request) => {
     }
 
     if (body.focusMode === 'agentSFC') {
-      const systemInstruction = "You are an assistant that must strictly answer questions based only on the content of the document provided in the first AI message of the chat history. For every user question, carefully search that document and provide an answer that directly references its content. Do not use your own knowledge or make assumptions beyond what is stated in the document. If the answer cannot be found in the document, respond with: 'The document does not contain the answer to this question.' Always remain faithful to the document in your responses.";
+      const systemInstruction = prompts.sfcPrompt;
       
       // Read sfc content
       let sfcContent = '';
@@ -380,9 +387,9 @@ export const POST = async (req: Request) => {
       message.content,
       history,
       llm,
-      embedding,
-      body.optimizationMode,
-      body.files,
+      // embedding,
+      // body.optimizationMode,
+      // body.files,
       body.systemInstructions as string,
     );
 
